@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Print Styles for PDF Generation */
+@page {
+  size: A4;
+  margin: 0;
+  /* Remove browser headers/footers */
+  @top-left { content: ""; }
+  @top-center { content: ""; }
+  @top-right { content: ""; }
+  @bottom-left { content: ""; }
+  @bottom-center { content: ""; }
+  @bottom-right { content: ""; }
+}
+
+@media print {
+  /* Simple print styles - hide everything except resume */
+  body * {
+    visibility: hidden;
+  }
+  
+  #resume-container,
+  #resume-container *,
+  #resume-container-mobile,
+  #resume-container-mobile *,
+  #print-resume-container,
+  #print-resume-container * {
+    visibility: visible;
+  }
+  
+  /* Position resume for print */
+  #resume-container,
+  #print-resume-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 8mm 5mm !important;
+    box-sizing: border-box !important;
+    background: white !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+  
+  /* Handle mobile scaled container */
+  #resume-container-mobile {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 8mm 5mm !important;
+    box-sizing: border-box !important;
+    background: white !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+  
+  /* Ensure all colors print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Fix creative template scaling issues */
+  .print\:transform-none {
+    transform: none !important;
+  }
+  
+  .print\:w-full {
+    width: 100% !important;
+  }
+  
+  .print\:h-auto {
+    height: auto !important;
+  }
+}
+
+/* Screen styles for resume container */
+#resume-container {
+  width: 210mm;
+  min-height: 297mm;
+  box-sizing: border-box;
+  margin: 0 auto;
+  background: white;
+}
+
+/* Mobile resume scaling - maintain A4 proportions but scale down */
+@media screen and (max-width: 1023px) {
+  /* Ensure mobile scaled resume maintains readability */
+  #resume-container-mobile {
+    font-size: 16px; /* Slightly larger base font for scaled content */
+  }
+  
+  /* Prevent text from being too small when scaled */
+  #resume-container-mobile h1 {
+    font-size: 2rem;
+  }
+  
+  #resume-container-mobile h2 {
+    font-size: 1.5rem;
+  }
+  
+  #resume-container-mobile h3 {
+    font-size: 1.25rem;
+  }
+  
+  /* Ensure proper line spacing */
+  #resume-container-mobile p,
+  #resume-container-mobile li {
+    line-height: 1.5;
+  }
+}
+
+/* Utility classes for print control */
+.print\:p-0 { padding: 0 !important; }
+.print\:border-0 { border-width: 0 !important; }  
+.print\:rounded-none { border-radius: 0 !important; }
+.print\:hidden { display: none !important; }
+.print\:block { display: block !important; }
+
+/* Fix for Tailwind oklch colors in all contexts */
+.text-gray-900 { color: #1f2937; }
+.text-gray-800 { color: #374151; }
+.text-gray-700 { color: #4b5563; }
+.text-gray-600 { color: #6b7280; }
+.text-blue-600 { color: #2563eb; }
+.text-blue-900 { color: #1e3a8a; }
+.text-blue-700 { color: #1d4ed8; }
+.bg-white { background-color: #ffffff; }
+.bg-gray-50 { background-color: #f9fafb; }
+.border-gray-300 { border-color: #d1d5db; }
+.border-gray-200 { border-color: #e5e7eb; }
+
+
+/* Force inputs to always use dark text */
+input, textarea, select {
+  @apply text-gray-900;
+}
+
+/* Fix Chrome/Edge autofill making text light */
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #111827 !important; /* Tailwind gray-900 */
+}
+
+/* Custom scrollbar styles */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive image scaling for templates */
+@media print {
+  /* Image scaling for PDF export */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+  
+  /* Ensure image containers maintain aspect ratio in print */
+  .print\:w-32 {
+    width: 8rem !important;
+  }
+  
+  .print\:h-40 {
+    height: 10rem !important;
+  }
+  
+  .print\:h-28 {
+    height: 7rem !important;
+  }
+  
+  .print\:w-28 {
+    width: 7rem !important;
+  }
+  
+  .print\:ml-4 {
+    margin-left: 1rem !important;
+  }
+  
+  .print\:w-12 {
+    width: 3rem !important;
+  }
+  
+  .print\:h-12 {
+    height: 3rem !important;
+  }
+  
+  .print\:w-10 {
+    width: 2.5rem !important;
+  }
+  
+  .print\:h-10 {
+    height: 2.5rem !important;
+  }
+  
+  .print\:text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+  }
+}
+
+
